@@ -4,9 +4,13 @@
     "port": 5432,
     "username": "postgres",
     "password": "postgres",
-    "database": "doit",
+    "database": "smartaccess",
     "migrations": ["./src/database/migrations/*.ts"],
     "cli":{
         "migrationsDir": "./src/database/migrations/"
-    }
+    },
+    "entities" : [
+        "./src/models/*.ts"
+        ]
+    
 }
