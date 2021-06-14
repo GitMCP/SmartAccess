@@ -11,7 +11,7 @@
     },
     "entities" : [
         "./src/models/*.ts",
-        ".build/src/models/*.ts"
+        "./build/src/models/*.ts"
         ],
     "extra": {
         "ssl": true
