@@ -23,6 +23,7 @@ module.exports = {
         "@typescript-eslint/no-use-before-define": [
             "error"
         ],
+		"no-var-requires": false
 
 	},
     "settings": {
