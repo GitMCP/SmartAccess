@@ -5,12 +5,12 @@
     "username": "d4fnd63a6ogrp0",
     "password": "48debf26a3e80dd50104388a47510bd33b8f5b8675a9e4a033c0e25d794f40b",
     "database": "d4fnd63a6ogrp0",
-    "migrations": ["./src/database/migrations/*.ts"],
+    "migrations": ["./dist/database/migrations/*.ts"],
     "cli":{
-        "migrationsDir": "./src/database/migrations/"
+        "migrationsDir": "./dist/database/migrations/"
     },
     "entities" : [
-        "./src/models/*.ts"
+        "./dist/models/*.ts"
         ],
     "extra": {
         "ssl": true
