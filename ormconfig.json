@@ -1,10 +1,10 @@
 {
     "type": "postgres",
-    "host": "ec2-34-225-167-77.compute-1.amazonaws.com",
+    "host": "ec2-54-197-228-62.compute-1.amazonaws.com",
     "port": 5432,
-    "username": "klcerkloxzcpgq",
-    "password": "678778858daffe0727517eaeea7a46f0664752dc4821ccfdb7e5d660801eae10",
-    "database": "d392ms6nqsm0i",
+    "username": "d4fnd63a6ogrp0",
+    "password": "48debf26a3e80dd50104388a47510bd33b8f5b8675a9e4a033c0e25d794f40b",
+    "database": "d4fnd63a6ogrp0",
     "migrations": ["./src/database/migrations/*.ts"],
     "cli":{
         "migrationsDir": "./src/database/migrations/"
