@@ -1,16 +1,19 @@
 {
     "type": "postgres",
-    "host": "localhost",
+    "host": "ec2-34-225-167-77.compute-1.amazonaws.com",
     "port": 5432,
-    "username": "postgres",
-    "password": "postgres",
-    "database": "smartaccess",
+    "username": "klcerkloxzcpgq",
+    "password": "678778858daffe0727517eaeea7a46f0664752dc4821ccfdb7e5d660801eae10",
+    "database": "d392ms6nqsm0i",
     "migrations": ["./src/database/migrations/*.ts"],
     "cli":{
         "migrationsDir": "./src/database/migrations/"
     },
     "entities" : [
         "./src/models/*.ts"
-        ]
-    
+        ],
+    "extra": {
+        "ssl": true
+    }
+
 }
