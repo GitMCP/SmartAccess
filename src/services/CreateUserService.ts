@@ -1,35 +1,22 @@
-import { getRepository } from 'typeorm';
-import User from '../models/User';
+import { User } from '../models/User';
 
 interface Request {
-    type: string;
     name: string;
     email: string;
     password: string;
 }
 
 class CreateUserService {
-    public async execute({
-        type,
-        name,
-        email,
-        password,
-    }: Request): Promise<User> {
-        const usersRepository = getRepository(User);
-
-        const UserExists = await usersRepository.findOne({
-            where: { email },
-        });
+    public async execute({ name, email, password }: Request): Promise<any> {
+        const UserExists = await User.findOne({ email });
         if (UserExists) {
             throw new Error('E-mail address already in use');
         }
 
-        const user = usersRepository.create({ type, name, email, password });
-
-        await usersRepository.save(user);
+        const user = User.create({ name, email, password });
 
         return user;
     }
 }
 
-export default CreateUserService;
+export { CreateUserService };

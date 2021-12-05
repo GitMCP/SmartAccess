@@ -1,19 +1,15 @@
 import mongoose from '../database/index';
+import { vehicleSchema } from './Vehicle';
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
-    name: {
-        type: String,
+const accessSchema = new Schema({
+    vehicle: {
+        type: vehicleSchema,
         required: true,
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
+    date: {
+        type: Date,
+        default: Date.now,
     },
     created_at: {
         type: Date,
@@ -26,4 +22,4 @@ const userSchema = new Schema({
     deleted_at: Date,
 });
 
-export const User = mongoose.model('User', userSchema);
+export const Access = mongoose.model('Access', accessSchema);

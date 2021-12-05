@@ -5,6 +5,8 @@ import multerConfig from '../config/multer';
 import path from 'path';
 import FormData from 'form-data';
 import fs from 'fs';
+import { Vehicle } from '../models/Vehicle';
+import { CreateAccessService } from '../services/CreateAccessService';
 
 const PlateRouter = Router();
 
@@ -13,27 +15,50 @@ function base64_encode(file: number | fs.PathLike) {
     return bitmap.toString('base64');
 }
 
-PlateRouter.post('/', multer(multerConfig).single('file'), async (req, res, next) => {
+PlateRouter.post('/', multer(multerConfig).single('file'), async (req, res) => {
     const io = req.app.get('socketio');
 
     const instance = axios.create({
         headers: {
             post: {
-                Authorization: 'Token 4de758197c1b5fccf766110c28b9212e76bee419'
-            }
-        }
-    })
-    
+                Authorization: 'Token 4de758197c1b5fccf766110c28b9212e76bee419',
+            },
+        },
+    });
+
     const body = {
-        upload: base64_encode(req.file.path)
+        upload: base64_encode(req.file.path),
     };
     fs.unlinkSync(req.file.path);
-    const { plate } = await (await instance.post('https://api.platerecognizer.com/v1/plate-reader/', body)).data.results[0];
-    
-    io.emit("FromAPI", `Veículo não cadastrado aguardando acesso. Placa: ${plate.toUpperCase()}`);
+    const plate = await (
+        await instance.post(
+            'https://api.platerecognizer.com/v1/plate-reader/',
+            body,
+        )
+    ).data.results[0].plate.toUpperCase();
 
-    return res.json({message: "Mensagem enviada!"});
+    const knownVehicle = await Vehicle.findOne({ plate });
+
+    if (knownVehicle) {
+        const createAccess = new CreateAccessService();
+        await createAccess.execute({ vehicle: knownVehicle });
+        io.emit('LAST_VEHICLE', {
+            plate: knownVehicle.plate,
+            model: `${knownVehicle.brand} ${knownVehicle.model}`,
+        });
+        io.emit('TEXT', 'LIBERA_CANCELA');
+        return res.status(200).json({
+            action: 'liberar',
+            message: 'Veículo já cadastrado, liberar cancela',
+        });
+    }
+
+    io.emit('UNKNOWN_VEHICLE', plate.toUpperCase());
+
+    return res.status(200).json({
+        action: 'aguardar',
+        message: 'Veículo não cadastrado, aguardar cadastro',
+    });
 });
-
 
 export default PlateRouter;
