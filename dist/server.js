@@ -26,6 +26,7 @@ io.on('connection', function (socket) {
     console.log('Socket', socket.id);
 });
 app.set('socketio', io);
-server.listen(3333, function () {
-    console.log('Server started on port 3333');
+var port = process.env.PORT || 3333;
+server.listen(port, function () {
+    console.log('Server started on port: ', port);
 });
