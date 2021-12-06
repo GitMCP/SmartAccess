@@ -46,6 +46,8 @@ var multer_2 = __importDefault(require("../config/multer"));
 var fs_1 = __importDefault(require("fs"));
 var Vehicle_1 = require("../models/Vehicle");
 var CreateAccessService_1 = require("../services/CreateAccessService");
+var WebSocket = require('ws');
+var ws = new WebSocket("ws://localhost:" + (process.env.PORT || 3333) + "/");
 var PlateRouter = express_1.Router();
 function base64_encode(file) {
     var bitmap = fs_1.default.readFileSync(file);
@@ -84,7 +86,7 @@ PlateRouter.post('/', multer_1.default(multer_2.default).single('file'), functio
                     plate: knownVehicle.plate,
                     model: knownVehicle.brand + " " + knownVehicle.model,
                 });
-                io.emit('TEXT', 'LIBERA_CANCELA');
+                ws.send("Libera Cancela");
                 return [2 /*return*/, res.status(200).json({
                         action: 'liberar',
                         message: 'Veículo já cadastrado, liberar cancela',

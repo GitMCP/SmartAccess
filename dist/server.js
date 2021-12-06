@@ -9,6 +9,7 @@ var http_1 = require("http");
 //import socketio from 'socket.io';
 var cors_1 = __importDefault(require("cors"));
 var express_fileupload_1 = __importDefault(require("express-fileupload"));
+var serverWs = require('./serverws');
 // import './database';
 var app = express_1.default();
 app.use(cors_1.default());
@@ -27,6 +28,7 @@ io.on('connection', function (socket) {
 });
 app.set('socketio', io);
 var port = process.env.PORT || 3333;
-server.listen(port, function () {
+var serverListener = server.listen(port, function () {
     console.log('Server started on port: ', port);
 });
+serverWs(serverListener);
