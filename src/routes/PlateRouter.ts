@@ -46,7 +46,7 @@ PlateRouter.post('/', multer(multerConfig).single('file'), async (req, res) => {
             plate: knownVehicle.plate,
             model: `${knownVehicle.brand} ${knownVehicle.model}`,
         });
-        io.emit('TEXT', 'LIBERA_CANCELA');
+        await axios.get('https://smartaccess-proxy-api.herokuapp.com/');
         return res.status(200).json({
             action: 'liberar',
             message: 'Veículo já cadastrado, liberar cancela',

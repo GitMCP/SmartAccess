@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Router } from 'express';
 import { Access } from '../models/Access';
 import { CreateAccessService } from '../services/CreateAccessService';
@@ -9,10 +10,6 @@ AccessRouter.get('/:last?', async (req, res) => {
     const { last } = req.query;
     if (last) {
         const [access] = await Access.find().sort({ date: -1 }).limit(1);
-        io.emit('LAST_VEHICLE', {
-            plate: access.vehicle.plate,
-            model: `${access.vehicle.brand} ${access.vehicle.model}`,
-        });
         return res.status(200).json(access);
     }
     const access = await Access.find({ where: { deleted_at: null } }).sort({
@@ -33,6 +30,7 @@ AccessRouter.post('/', async (req, res) => {
             plate: access.vehicle.plate,
             model: `${access.vehicle.brand} ${access.vehicle.model}`,
         });
+        await axios.get('https://smartaccess-proxy-api.herokuapp.com/');
         res.json(access);
     } catch (err: any) {
         return res.status(400).json({ error: err.message });
