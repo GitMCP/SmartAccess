@@ -7,6 +7,9 @@ import FormData from 'form-data';
 import fs from 'fs';
 import { Vehicle } from '../models/Vehicle';
 import { CreateAccessService } from '../services/CreateAccessService';
+const WebSocket = require('ws');
+
+const ws = new WebSocket(`ws://localhost:${process.env.PORT || 3333}/`);
 
 const PlateRouter = Router();
 
@@ -46,7 +49,7 @@ PlateRouter.post('/', multer(multerConfig).single('file'), async (req, res) => {
             plate: knownVehicle.plate,
             model: `${knownVehicle.brand} ${knownVehicle.model}`,
         });
-        io.emit('TEXT', 'LIBERA_CANCELA');
+        ws.send(`Libera Cancela`);
         return res.status(200).json({
             action: 'liberar',
             message: 'Veículo já cadastrado, liberar cancela',

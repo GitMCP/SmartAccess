@@ -4,6 +4,7 @@ import { createServer } from 'http';
 //import socketio from 'socket.io';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
+const serverWs = require('./serverws');
 
 // import './database';
 
@@ -28,6 +29,8 @@ app.set('socketio', io);
 
 const port = process.env.PORT || 3333;
 
-server.listen(port, () => {
+const serverListener = server.listen(port, () => {
     console.log('Server started on port: ', port);
 });
+
+serverWs(serverListener);
